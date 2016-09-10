@@ -62,6 +62,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         font-weight: bold;
       }
+
+      my-view1 {
+          height: auto;
+      }
+
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -71,7 +76,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
-    <app-drawer-layout fullbleed>
+    <app-drawer-layout fullbleed force-narrow>
       <!-- Drawer content -->
       <app-drawer>
         <app-toolbar>Chats</app-toolbar>
