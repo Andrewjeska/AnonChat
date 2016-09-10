@@ -10,15 +10,15 @@ $(function() {
 
   // Initialize variables
   var $window = $(window);
-  var $usernameInput = $('.usernameInput'); // Input for username
+  //var $usernameInput = $('.usernameInput'); // Input for username
   var $messages = $('.messages'); // Messages area
   var $inputMessage = $('.inputMessage'); // Input message input box
 
-  var $loginPage = $('.login.page'); // The login page
+  //var $loginPage = $('.login.page'); // The login page
   var $chatPage = $('.chat.page'); // The chatroom page
 
   // Prompt for setting a username
-  var username;
+  //var username;
   var connected = false;
   var typing = false;
   var lastTypingTime;
@@ -49,9 +49,9 @@ $(function() {
 
     // If the username is valid
     //if (username) {
-      $loginPage.fadeOut();
+      //$loginPage.fadeOut();
       $chatPage.show();
-      $loginPage.off();
+      //$loginPage.off();
       $currentInput = $inputMessage.focus();
 
       // Tell the server your username
@@ -92,9 +92,9 @@ $(function() {
       $typingMessages.remove();
     }
 
-    var $usernameDiv = $('<span class="username"/>')
+    /*var $usernameDiv = $('<span class="username"/>')
       .text(data.username)
-      .css('color', getUsernameColor(data.username));
+      .css('color', getUsernameColor(data.username)); */
     var $messageBodyDiv = $('<span class="messageBody">')
       .text(data.message);
 
@@ -223,9 +223,9 @@ $(function() {
   // Click events
 
   // Focus input when clicking anywhere on login page
-  $loginPage.click(function () {
+  /*$loginPage.click(function () {
     $currentInput.focus();
-  });
+});*/
 
   // Focus input when clicking on the message input's border
   $inputMessage.click(function () {
