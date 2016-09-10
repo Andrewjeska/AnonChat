@@ -14,19 +14,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <!-- <script src="http://www.w3schools.com/lib/w3data.js"></script> -->
 
 <dom-module id="my-view1">
-  <template>
     <style include="shared-styles">
-      :host {
-        display: block;
-        padding: 10px;
-      }
+        :host {
+            display: block;
+            padding: 10px;
+        }
 
+        chat-room{
+            height: 100%;
+        }
 
     </style>
+  <template>
 
-    <div style="height:100%">
-        <chat-room name="chat1"></chat-room>
-    </div>
+    <chat-room name="chat1" ></chat-room>
+
   </template>
 
   <script>
