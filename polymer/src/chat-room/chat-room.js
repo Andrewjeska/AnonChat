@@ -94,11 +94,12 @@ $(function() {
       $typingMessages.remove();
     }
 
-    /*var $usernameDiv = $('<span class="username"/>')
+    var $usernameDiv = $('<span class="username"/>')
       .text(data.username)
-      .css('color', getUsernameColor(data.username)); */
+      .css('color', getUsernameColor(data.username));
     var $messageBodyDiv = $('<span class="messageBody">')
-      .text(data.message);
+      .text(data.message)
+      .css('color', getUsernameColor(data.username));
 
     var typingClass = data.typing ? 'typing' : '';
     var $messageDiv = $('<li class="message"/>')
@@ -151,6 +152,7 @@ $(function() {
     } else {
       $messages.append($el);
     }
+    console.log($messages);
     $messages[0].scrollTop = $messages[0].scrollHeight;
   }
 
@@ -239,7 +241,7 @@ $(function() {
     log(message, {
       prepend: true
     });
-    console.log('user' + data.username);
+    console.log('user ' + data.username);
     addParticipantsMessage(data);
   });
 

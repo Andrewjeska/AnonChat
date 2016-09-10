@@ -60,13 +60,14 @@ io.on('connection', function (socket) {
     socket.on('add user', function () {
 
         username = generate_username();
-
         if (addedUser) return;
 
         // we store the username in the socket session for this client
         ++numUsers;
         addedUser = true;
+        console.log("login for " + username);
         socket.emit('login', {
+            username: username,
             numUsers: numUsers
         });
         // echo globally (all clients) that a person has connected
