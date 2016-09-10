@@ -39,12 +39,16 @@ app.get("/[a-z]{4}/", function(req,res,next){
     res.send("Accessing chat room with id: " + room)
 });
 
+var numUsers=0;
 
 io.on('connection', function (socket) {
+
+    var username;
     var addedUser = false;
 
     // when the client emits 'new message', this listens and executes
     socket.on('new message', function (data) {
+
         // we tell the client to execute 'new message'
         socket.broadcast.emit('new message', {
             username: socket.username,
@@ -53,11 +57,13 @@ io.on('connection', function (socket) {
     });
 
     // when the client emits 'add user', this listens and executes
-    socket.on('add user', function (username) {
+    socket.on('add user', function () {
+
+        username = generate_username();
+
         if (addedUser) return;
 
         // we store the username in the socket session for this client
-        socket.username = username;
         ++numUsers;
         addedUser = true;
         socket.emit('login', {
@@ -65,7 +71,7 @@ io.on('connection', function (socket) {
         });
         // echo globally (all clients) that a person has connected
         socket.broadcast.emit('user joined', {
-            username: socket.username,
+            username: username,
             numUsers: numUsers
         });
     });
@@ -73,14 +79,14 @@ io.on('connection', function (socket) {
     // when the client emits 'typing', we broadcast it to others
     socket.on('typing', function () {
         socket.broadcast.emit('typing', {
-            username: socket.username
+            username: username
         });
     });
 
     // when the client emits 'stop typing', we broadcast it to others
     socket.on('stop typing', function () {
         socket.broadcast.emit('stop typing', {
-            username: socket.username
+            username: username
         });
     });
 
@@ -91,7 +97,7 @@ io.on('connection', function (socket) {
 
             // echo globally that this client has left
             socket.broadcast.emit('user left', {
-                username: socket.username,
+                username: username,
                 numUsers: numUsers
             });
         }
@@ -101,5 +107,14 @@ io.on('connection', function (socket) {
 var get_url = function(x) {
     var path = url.parse(x).pathname;
     return path.split("/")[1];
-}
+};
+
+var cur_user = 0
+
+var generate_username = function (){
+    cur_user++
+
+    return cur_user;
+};
+
 

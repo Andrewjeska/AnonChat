@@ -55,9 +55,11 @@ $(function() {
       $currentInput = $inputMessage.focus();
 
       // Tell the server your username
-      //socket.emit('add user', username);
     //}
   }
+
+  socket.emit('add user');
+
 
   // Sends a chat message
   function sendMessage () {
@@ -205,14 +207,9 @@ $(function() {
     }
     // When the client hits ENTER on their keyboard
     if (event.which === 13) {
-      if (username) {
         sendMessage();
         socket.emit('stop typing');
         typing = false;
-      } else {
-        setUsername();
-        //console.log("no user names");
-    }
     }
   });
 
@@ -242,6 +239,7 @@ $(function() {
     log(message, {
       prepend: true
     });
+    console.log('user' + data.username);
     addParticipantsMessage(data);
   });
 
