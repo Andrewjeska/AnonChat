@@ -1,0 +1,7 @@
+{
+  "name": "AnonChat",
+  "short_name": "AnonChat",
+  "description": "an anonymous chat room",
+  "start_url": "/",
+  "display": "standalone"
+}
