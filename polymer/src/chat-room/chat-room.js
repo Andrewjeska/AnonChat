@@ -1,5 +1,5 @@
-$(document).ready(function() {
-  debugger
+$(function() {
+
   var FADE_TIME = 150; // ms
   var TYPING_TIMER_LENGTH = 400; // ms
   var COLORS = [
@@ -22,7 +22,7 @@ $(document).ready(function() {
   var connected = false;
   var typing = false;
   var lastTypingTime;
-  var $currentInput = $usernameInput.focus();
+  var $currentInput = $inputMessage.focus();
 
   var socket = io();
 
@@ -36,20 +36,27 @@ $(document).ready(function() {
     log(message);
   }
 
+  /*
+  $loginPage.fadeOut();
+  $chatPage.show();
+  $loginPage.off('click');
+  $currentInput = $inputMessage.focus();
+  */
   // Sets the client's username
+
   function setUsername () {
-    username = cleanInput($usernameInput.val().trim());
+    //username = cleanInput($usernameInput.val().trim());
 
     // If the username is valid
-    if (username) {
+    //if (username) {
       $loginPage.fadeOut();
       $chatPage.show();
-      $loginPage.off('click');
+      $loginPage.off();
       $currentInput = $inputMessage.focus();
 
       // Tell the server your username
-      socket.emit('add user', username);
-    }
+      //socket.emit('add user', username);
+    //}
   }
 
   // Sends a chat message
@@ -204,7 +211,8 @@ $(document).ready(function() {
         typing = false;
       } else {
         setUsername();
-      }
+        //console.log("no user names");
+    }
     }
   });
 
