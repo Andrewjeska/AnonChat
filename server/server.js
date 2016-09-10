@@ -2,27 +2,42 @@ var url = require("url");
 var express = require("express");
 var bodyParser = require("body-parser");
 var path = require('path');
-var io = require('socket.io');
-
 var app = express();
-app.use(express.static(path.resolve("../polymer")));
+var server = require('http').createServer(app);
+
+// var server = app.listen(80, function() {
+//     console.log("Server started.");
+// });
+
+var io = require('socket.io')(server);
+
+app.use(express.static(path.resolve("polymer")));
+
+//console.log(path.resolve("polymer"))
 
 var gameStates = {};
+
+var port = process.env.PORT || 3000;
+
+server.listen(port, function () {
+    console.log('Server listening at port %d', port);
+});
+
 
 app.use(bodyParser.json());
 app.use(express.static(path.resolve("../polymer")));
 
 
 app.get("/", function (req,res){
-    res.send("../polymer/index.html")
+    //res.render('polymer/index')
+    res.sendFile("index.html",{ root: __dirname + "/../polymer" });
 });
 
 app.get("/[a-z]{4}/", function(req,res,next){
 
-    //check if game exists
-
+    var room = get_url(req.url);
+    res.send("Accessing chat room with id: " + room)
 });
-
 
 
 io.on('connection', function (socket) {
@@ -83,7 +98,8 @@ io.on('connection', function (socket) {
     });
 });
 
+var get_url = function(x) {
+    var path = url.parse(x).pathname;
+    return path.split("/")[1];
+}
 
-var server = app.listen(80, function() {
-    console.log("Server started.");
-});
