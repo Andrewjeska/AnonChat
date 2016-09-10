@@ -81,7 +81,7 @@ $(function() {
   // Log a message
   function log (message, options) {
     var $el = $('<li>').addClass('log').text(message);
-    addMessageElement($el, options);
+    addMessageElement($el, options); 
   }
 
   // Adds the visual chat message to the message list
