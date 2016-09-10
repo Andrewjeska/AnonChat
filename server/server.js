@@ -1,15 +1,89 @@
-var express = require('express');
+var url = require("url");
+var express = require("express");
+var bodyParser = require("body-parser");
+var path = require('path');
+var io = require('socket.io');
+
 var app = express();
+app.use(express.static(path.resolve("../polymer")));
 
-app.get('/', function (req, res) {
-    res.send('Hello World');
-})
+var gameStates = {};
 
-var server = app.listen(8081, function () {
+app.use(bodyParser.json());
+app.use(express.static(path.resolve("../polymer")));
 
-    var host = server.address().address
-    var port = server.address().port
 
-    console.log("Example app listening at http://%s:%s", host, port)
+app.get("/", function (req,res){
+    res.send("../polymer/index.html")
+});
 
-})
+app.get("/[a-z]{4}/", function(req,res,next){
+
+    //check if game exists
+
+});
+
+
+
+io.on('connection', function (socket) {
+    var addedUser = false;
+
+    // when the client emits 'new message', this listens and executes
+    socket.on('new message', function (data) {
+        // we tell the client to execute 'new message'
+        socket.broadcast.emit('new message', {
+            username: socket.username,
+            message: data
+        });
+    });
+
+    // when the client emits 'add user', this listens and executes
+    socket.on('add user', function (username) {
+        if (addedUser) return;
+
+        // we store the username in the socket session for this client
+        socket.username = username;
+        ++numUsers;
+        addedUser = true;
+        socket.emit('login', {
+            numUsers: numUsers
+        });
+        // echo globally (all clients) that a person has connected
+        socket.broadcast.emit('user joined', {
+            username: socket.username,
+            numUsers: numUsers
+        });
+    });
+
+    // when the client emits 'typing', we broadcast it to others
+    socket.on('typing', function () {
+        socket.broadcast.emit('typing', {
+            username: socket.username
+        });
+    });
+
+    // when the client emits 'stop typing', we broadcast it to others
+    socket.on('stop typing', function () {
+        socket.broadcast.emit('stop typing', {
+            username: socket.username
+        });
+    });
+
+    // when the user disconnects.. perform this
+    socket.on('disconnect', function () {
+        if (addedUser) {
+            --numUsers;
+
+            // echo globally that this client has left
+            socket.broadcast.emit('user left', {
+                username: socket.username,
+                numUsers: numUsers
+            });
+        }
+    });
+});
+
+
+var server = app.listen(80, function() {
+    console.log("Server started.");
+});
